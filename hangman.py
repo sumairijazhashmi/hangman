@@ -219,9 +219,9 @@ class HangMan_GUI(QtWidgets.QMainWindow,Ui_HangMan):
         self.display()           
     
     def load_and_clean_words(self):
-        
+
         # load words as list
-        file_path_name = os.path.join(os.path.dirname(__file__), "5000-words.txt")
+        file_path_name = os.path.join(os.path.dirname(__file__), "words.txt")
         all_words = open(file_path_name, 'r')
         all_words_str = all_words.read()
         all_words_list = all_words_str.split('\n')
@@ -230,22 +230,7 @@ class HangMan_GUI(QtWidgets.QMainWindow,Ui_HangMan):
         if all_words_list[-1] == '':
             all_words_list.remove(all_words_list[-1])
 
-        cleaned_words = []
-
-        # only insert those words with length >= 4
-        for word in all_words_list:
-            if len(word) >= 4:
-                cleaned_words.append(word)
-
-        # create new file of cleaned words
-        new_file = open("words.txt", 'w')
-        cleaned_words_str = ""
-        for i in range(len(cleaned_words)):
-            cleaned_words_str += cleaned_words[i] + '\n'
-        new_file.write(cleaned_words_str)
-        new_file.close()
-        
-        return cleaned_words
+        return all_words_list
 
     # choose a word for the game
     def chooseWord(self):
@@ -262,6 +247,7 @@ class HangMan_GUI(QtWidgets.QMainWindow,Ui_HangMan):
     # what happens when the button "give up" is clicked.
     def giveup(self):
         self.textbox_lives.setText("You Lose! The word was: " + self.chosenWord)
+        self.freeze()
 
     def display(self):
         self.textbox_word.setText(self.chosenMasked)
